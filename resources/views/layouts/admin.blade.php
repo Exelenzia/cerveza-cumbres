@@ -25,6 +25,7 @@
                         $links = [
                             ['route' => 'admin.dashboard', 'label' => 'Dashboard'],
                             ['route' => 'admin.orders.index', 'label' => 'Pedidos'],
+                            ['route' => 'admin.reports.index', 'label' => 'Reportes'],
                             ['route' => 'admin.categories.index', 'label' => 'Categorías'],
                             ['route' => 'admin.products.index', 'label' => 'Productos'],
                             ['route' => 'admin.packs.index', 'label' => 'Packs'],

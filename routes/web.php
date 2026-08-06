@@ -9,6 +9,7 @@ use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Marketing\Coupons as AdminCoupons;
 use App\Livewire\Admin\Orders\Index as AdminOrdersIndex;
 use App\Livewire\Admin\Orders\Show as AdminOrdersShow;
+use App\Livewire\Admin\Reports as AdminReports;
 use App\Livewire\Admin\Settings as AdminSettings;
 use App\Livewire\Admin\Shipping\Zones as AdminShippingZones;
 use App\Livewire\Admin\Sunat\Settings as AdminSunatSettings;
@@ -56,6 +57,7 @@ Route::middleware(['auth', 'role:admin|staff'])->prefix('admin')->name('admin.')
     Route::get('/packs', Packs::class)->name('packs.index');
     Route::get('/pedidos', AdminOrdersIndex::class)->name('orders.index');
     Route::get('/pedidos/{order}', AdminOrdersShow::class)->name('orders.show');
+    Route::get('/reportes', AdminReports::class)->name('reports.index');
     Route::get('/envios', AdminShippingZones::class)->name('shipping.zones');
     Route::get('/cupones', AdminCoupons::class)->name('coupons.index');
     Route::get('/paginas', AdminCmsPages::class)->name('cms.pages.index');
