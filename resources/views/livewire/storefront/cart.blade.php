@@ -16,6 +16,15 @@
                     <div class="flex-1">
                         <p class="font-display text-lg text-cream-50">{{ $item['model']->name }}</p>
                         <p class="text-sm text-cream-200/60">S/ {{ number_format($item['unitPrice'], 2) }} c/u</p>
+                        @if ($item['quantity'] > $item['availableStock'])
+                            <p class="mt-1 text-sm text-red-400">
+                                @if ($item['availableStock'] <= 0)
+                                    Sin stock disponible.
+                                @else
+                                    Solo quedan {{ $item['availableStock'] }} disponibles.
+                                @endif
+                            </p>
+                        @endif
                     </div>
                     <input
                         type="number"

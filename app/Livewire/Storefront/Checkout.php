@@ -10,6 +10,7 @@ use App\Models\ShippingZone;
 use App\Services\Cart\CartService;
 use App\Services\Cart\CouponException;
 use App\Services\Cart\CouponService;
+use App\Services\Cart\StockReservationService;
 use App\Services\Culqi\CulqiChargeException;
 use App\Services\Culqi\CulqiService;
 use App\Services\WhatsApp\WhatsAppService;
@@ -91,8 +92,18 @@ class Checkout extends Component
             'shipping_zone_id' => ($hasZones ? 'required|' : 'nullable|').'exists:shipping_zones,id',
         ]);
 
-        if (app(CartService::class)->isEmpty()) {
+        $cart = app(CartService::class);
+
+        if ($cart->isEmpty()) {
             $this->redirectRoute('cart');
+
+            return;
+        }
+
+        $insufficient = $cart->items()->first(fn (array $item) => $item['quantity'] > $item['availableStock']);
+
+        if ($insufficient) {
+            $this->paymentError = "No hay stock suficiente de \"{$insufficient['model']->name}\". Ajusta la cantidad en tu carrito.";
 
             return;
         }
@@ -144,9 +155,21 @@ class Checkout extends Component
 
         $total = round($subtotal - $discount + $shippingCost, 2);
 
+        $stock = app(StockReservationService::class);
+        $requirements = $cart->productRequirements($items);
+        $shortProductId = $stock->reserve($requirements);
+
+        if ($shortProductId !== null) {
+            $this->paymentError = 'Uno de los productos de tu carrito ya no tiene stock suficiente. Actualiza tu carrito e intenta de nuevo.';
+            $this->processing = false;
+
+            return;
+        }
+
         try {
             $chargeId = app(CulqiService::class)->charge($token, $total, $this->customer_email);
         } catch (CulqiChargeException $e) {
+            $stock->release($requirements);
             $this->paymentError = $e->getMessage();
             $this->processing = false;
 

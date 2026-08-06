@@ -47,4 +47,9 @@ class Pack extends Model implements HasMedia
 
         return (int) round((1 - ($this->price / $this->compare_at_price)) * 100);
     }
+
+    public function getIsOutOfStockAttribute(): bool
+    {
+        return $this->products->contains(fn (Product $product) => $product->stock < $product->pivot->quantity);
+    }
 }

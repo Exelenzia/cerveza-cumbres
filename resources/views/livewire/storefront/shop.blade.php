@@ -34,6 +34,9 @@
                     @if ($product->discount_percent)
                         <span class="absolute right-3 top-3 rounded-full bg-red-500 px-3 py-1 text-xs font-semibold text-cream-50">-{{ $product->discount_percent }}%</span>
                     @endif
+                    @if ($product->stock <= 0)
+                        <span class="absolute inset-x-3 bottom-3 rounded-full bg-cumbre-950/90 px-3 py-1 text-center text-xs font-semibold uppercase tracking-wide text-cream-100">Agotado</span>
+                    @endif
                 </div>
                 <div class="p-5">
                     <p class="text-xs uppercase tracking-wide text-gold-400">{{ $product->style }} @if($product->volume_ml) · {{ $product->volume_ml }} ml @endif</p>
@@ -48,9 +51,15 @@
                                 <p class="text-sm text-cream-200/50 line-through">S/ {{ number_format($product->compare_at_price, 2) }}</p>
                             @endif
                         </div>
-                        <button wire:click="addToCart('product', {{ $product->id }})" class="rounded-lg bg-gold-500 px-3 py-1.5 text-xs font-semibold text-cumbre-950 hover:bg-gold-400">
-                            Agregar
-                        </button>
+                        @if ($product->stock > 0)
+                            <button wire:click="addToCart('product', {{ $product->id }})" class="rounded-lg bg-gold-500 px-3 py-1.5 text-xs font-semibold text-cumbre-950 hover:bg-gold-400">
+                                Agregar
+                            </button>
+                        @else
+                            <button type="button" disabled class="cursor-not-allowed rounded-lg bg-cumbre-800 px-3 py-1.5 text-xs font-semibold text-cream-100/50">
+                                Agotado
+                            </button>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -70,6 +79,9 @@
                             @if ($pack->discount_percent)
                                 <span class="absolute right-3 top-3 rounded-full bg-red-500 px-3 py-1 text-xs font-semibold text-cream-50">-{{ $pack->discount_percent }}%</span>
                             @endif
+                            @if ($pack->is_out_of_stock)
+                                <span class="absolute inset-x-3 bottom-3 rounded-full bg-cumbre-950/90 px-3 py-1 text-center text-xs font-semibold uppercase tracking-wide text-cream-100">Agotado</span>
+                            @endif
                         </div>
                         <div class="p-5">
                             <h3 class="font-display text-xl text-cream-50">{{ $pack->name }}</h3>
@@ -83,9 +95,15 @@
                                         <p class="text-sm text-cream-200/50 line-through">S/ {{ number_format($pack->compare_at_price, 2) }}</p>
                                     @endif
                                 </div>
-                                <button wire:click="addToCart('pack', {{ $pack->id }})" class="rounded-lg bg-gold-500 px-3 py-1.5 text-xs font-semibold text-cumbre-950 hover:bg-gold-400">
-                                    Agregar
-                                </button>
+                                @if (! $pack->is_out_of_stock)
+                                    <button wire:click="addToCart('pack', {{ $pack->id }})" class="rounded-lg bg-gold-500 px-3 py-1.5 text-xs font-semibold text-cumbre-950 hover:bg-gold-400">
+                                        Agregar
+                                    </button>
+                                @else
+                                    <button type="button" disabled class="cursor-not-allowed rounded-lg bg-cumbre-800 px-3 py-1.5 text-xs font-semibold text-cream-100/50">
+                                        Agotado
+                                    </button>
+                                @endif
                             </div>
                         </div>
                     </div>

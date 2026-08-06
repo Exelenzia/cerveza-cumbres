@@ -98,7 +98,7 @@ class CartService
         $packIds = collect($cart)->where('type', 'pack')->pluck('id');
 
         $products = Product::whereIn('id', $productIds)->where('is_active', true)->get()->keyBy('id');
-        $packs = Pack::whereIn('id', $packIds)->where('is_active', true)->get()->keyBy('id');
+        $packs = Pack::whereIn('id', $packIds)->where('is_active', true)->with('products')->get()->keyBy('id');
 
         return collect($cart)
             ->map(function (array $entry, string $key) use ($products, $packs) {
@@ -120,10 +120,50 @@ class CartService
                     'quantity' => $quantity,
                     'unitPrice' => $unitPrice,
                     'lineTotal' => round($unitPrice * $quantity, 2),
+                    'availableStock' => $entry['type'] === 'product'
+                        ? $model->stock
+                        : $this->packAvailableStock($model),
                 ];
             })
             ->filter()
             ->values();
+    }
+
+    private function packAvailableStock(Pack $pack): int
+    {
+        if ($pack->products->isEmpty()) {
+            return 0;
+        }
+
+        return (int) $pack->products->map(fn (Product $product) => intdiv($product->stock, max(1, $product->pivot->quantity)))->min();
+    }
+
+    /**
+     * Net product stock requirements across all cart lines, expanding packs into
+     * their constituent products so the same product isn't decremented twice
+     * under two different guises.
+     *
+     * @param  Collection  $items  result of items()
+     * @return array<int, int> product id => quantity required
+     */
+    public function productRequirements(Collection $items): array
+    {
+        $requirements = [];
+
+        foreach ($items as $item) {
+            if ($item['type'] === 'product') {
+                $requirements[$item['model']->id] = ($requirements[$item['model']->id] ?? 0) + $item['quantity'];
+
+                continue;
+            }
+
+            foreach ($item['model']->products as $product) {
+                $needed = $product->pivot->quantity * $item['quantity'];
+                $requirements[$product->id] = ($requirements[$product->id] ?? 0) + $needed;
+            }
+        }
+
+        return $requirements;
     }
 
     private function raw(): array

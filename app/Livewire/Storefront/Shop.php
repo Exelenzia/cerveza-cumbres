@@ -38,7 +38,7 @@ class Shop extends Component
         return view('livewire.storefront.shop', [
             'categories' => Category::orderBy('sort_order')->get(),
             'products' => $products,
-            'packs' => $this->category ? collect() : Pack::where('is_active', true)->orderBy('sort_order')->get(),
+            'packs' => $this->category ? collect() : Pack::where('is_active', true)->orderBy('sort_order')->with('products')->get(),
         ]);
     }
 }
