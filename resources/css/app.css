@@ -3,25 +3,144 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
+@custom-variant light (&:where(.light, .light *));
+
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
     --font-display: 'Oswald', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
 
-    /* Cumbres brand palette — dark, mountain/amber identity from the Figma reference */
-    --color-cumbre-950: #14100c;
-    --color-cumbre-900: #1c1611;
-    --color-cumbre-800: #241c15;
-    --color-cumbre-700: #33281c;
-    --color-cumbre-600: #4a3826;
+    /* Cumbres brand palette — sampled from Branding/ (armonia de colores.png, logo1/logo2, isotipo) */
+    --color-terracotta-50: #fbf1ec;
+    --color-terracotta-100: #f6e1d6;
+    --color-terracotta-200: #eec0ac;
+    --color-terracotta-300: #e39a7d;
+    --color-terracotta-400: #d97854;
+    --color-terracotta-500: #c85a3f;
+    --color-terracotta-600: #ac472f;
+    --color-terracotta-700: #8a3826;
+    --color-terracotta-800: #6b2c1f;
+    --color-terracotta-900: #4a1f16;
+    --color-terracotta-950: #2e130d;
+
+    --color-teal-50: #eefaf7;
+    --color-teal-100: #d3f1ea;
+    --color-teal-200: #a7e3d6;
+    --color-teal-300: #78c0c0;
+    --color-teal-400: #4fa8a3;
+    --color-teal-500: #348783;
+    --color-teal-600: #266a67;
+    --color-teal-700: #1f5452;
+    --color-teal-800: #1a4241;
+    --color-teal-900: #163634;
+    --color-teal-950: #0c1f1e;
+
+    --color-coral-50: #fff1ec;
+    --color-coral-100: #ffdfd1;
+    --color-coral-200: #ffbba3;
+    --color-coral-300: #ff9078;
+    --color-coral-400: #f97350;
+    --color-coral-500: #e85a35;
+    --color-coral-600: #c8451f;
+    --color-coral-700: #9f3719;
+    --color-coral-800: #7a2c16;
+    --color-coral-900: #5c2413;
+    --color-coral-950: #331207;
 
     --color-cream-50: #fdfaf3;
     --color-cream-100: #f4ecd8;
     --color-cream-200: #e9dcbc;
+    --color-cream-300: #ddc59a;
+    --color-cream-400: #c9a877;
+    --color-cream-500: #b28e5c;
+    --color-cream-600: #8f7048;
+    --color-cream-700: #6b5436;
+    --color-cream-800: #4a3a27;
+    --color-cream-900: #2e2419;
 
-    --color-gold-300: #edc788;
-    --color-gold-400: #e0a852;
-    --color-gold-500: #d18b2e;
-    --color-gold-600: #ab6f22;
-    --color-gold-700: #85571c;
+    --color-ink-600: #4a3826;
+    --color-ink-700: #33281c;
+    --color-ink-800: #241c15;
+    --color-ink-900: #1c1611;
+    --color-ink-950: #14100c;
+
+    /* Semantic tokens — dark is the default look (matches logo2.jpg: crema sobre negro); .light opts into logo1.jpg (tinta sobre crema) */
+    --color-surface: var(--color-ink-950);
+    --color-surface-elevated: var(--color-ink-900);
+    --color-surface-muted: var(--color-ink-800);
+    --color-border: var(--color-ink-700);
+    --color-text: var(--color-cream-50);
+    --color-text-muted: var(--color-cream-300);
+
+    --color-primary: var(--color-terracotta-400);
+    --color-primary-hover: var(--color-terracotta-300);
+    --color-primary-active: var(--color-terracotta-200);
+    --color-primary-on: var(--color-terracotta-950);
+
+    --color-secondary: var(--color-teal-300);
+    --color-secondary-hover: var(--color-teal-200);
+    --color-secondary-soft: color-mix(in srgb, var(--color-teal-300) 16%, transparent);
+
+    --color-accent: var(--color-coral-400);
+    --color-accent-hover: var(--color-coral-300);
+    --color-accent-on: var(--color-coral-950);
+
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 1px rgba(0, 0, 0, 0.2);
+    --shadow-elevated: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px -14px rgba(0, 0, 0, 0.6);
+
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.light {
+    --color-surface: var(--color-cream-50);
+    --color-surface-elevated: #ffffff;
+    --color-surface-muted: var(--color-cream-100);
+    --color-border: var(--color-cream-200);
+    --color-text: var(--color-ink-950);
+    --color-text-muted: var(--color-cream-700);
+
+    --color-primary: var(--color-terracotta-500);
+    --color-primary-hover: var(--color-terracotta-600);
+    --color-primary-active: var(--color-terracotta-700);
+    --color-primary-on: var(--color-cream-50);
+
+    --color-secondary: var(--color-teal-600);
+    --color-secondary-hover: var(--color-teal-700);
+    --color-secondary-soft: var(--color-teal-200);
+
+    --color-accent: var(--color-coral-500);
+    --color-accent-hover: var(--color-coral-600);
+    --color-accent-on: var(--color-cream-50);
+
+    --shadow-card: 0 1px 3px rgba(20, 16, 12, 0.05), 0 1px 2px rgba(20, 16, 12, 0.06);
+    --shadow-elevated: 0 1px 2px rgba(20, 16, 12, 0.06), 0 8px 24px -12px rgba(20, 16, 12, 0.18);
+}
+
+/* red-3xx/4xx and green-3xx/4xx (form errors, success banners) are tuned for permanently-dark surfaces;
+   darken them in light mode so they stay legible against cream backgrounds. Kept as literal red/green
+   (not remapped to brand hues) since error/success rely on universal color convention, not brand identity. */
+.light .text-red-300,
+.light .text-red-400,
+.light .text-rose-300,
+.light .text-rose-400 {
+    color: #b91c1c;
+}
+
+.light .text-green-300,
+.light .text-green-400 {
+    color: #15803d;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }

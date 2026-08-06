@@ -1,12 +1,12 @@
 @php($data = $block->data)
-<section class="bg-gold-500 py-16">
+<section class="bg-primary py-16">
     <div class="mx-auto max-w-3xl px-6 text-center">
-        <h2 class="mb-4 font-display text-3xl uppercase tracking-wide text-cumbre-950">{{ $data['heading'] ?? '' }}</h2>
+        <h2 class="mb-4 font-display text-3xl uppercase tracking-wide text-primary-on">{{ $data['heading'] ?? '' }}</h2>
         @if (! empty($data['body']))
-            <p class="mb-8 text-cumbre-900/80">{{ $data['body'] }}</p>
+            <p class="mb-8 text-primary-on/80">{{ $data['body'] }}</p>
         @endif
         @if (! empty($data['button_label']) && ! empty($data['button_link']))
-            <a href="{{ $data['button_link'] }}" class="inline-block rounded-lg bg-cumbre-950 px-8 py-3 font-semibold text-gold-400 hover:bg-cumbre-900">
+            <a href="{{ $data['button_link'] }}" class="inline-block rounded-lg bg-surface px-8 py-3 font-semibold text-primary hover:bg-surface-muted">
                 {{ $data['button_label'] }}
             </a>
         @endif

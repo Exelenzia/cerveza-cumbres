@@ -6,18 +6,26 @@
 
         <title>{{ $title ?? 'Admin' }} · Cumbres</title>
 
+        <script>
+            (function () {
+                var stored = localStorage.getItem('theme');
+                var theme = stored || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+                if (theme === 'light') document.documentElement.classList.add('light');
+            })();
+        </script>
+
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         @livewireStyles
     </head>
-    <body class="min-h-screen bg-cumbre-950 font-sans text-cream-100 antialiased">
+    <body class="min-h-screen bg-surface font-sans text-text antialiased transition-colors duration-300">
         <div class="flex min-h-screen">
-            <aside class="flex w-64 shrink-0 flex-col border-r border-cumbre-700/60 bg-cumbre-900">
+            <aside class="flex w-64 shrink-0 flex-col border-r border-border bg-surface-muted">
                 <div class="px-6 py-5">
                     <a href="{{ route('admin.dashboard') }}" wire:navigate class="font-display text-xl font-semibold tracking-wide">
-                        <span class="text-cream-100">CUM</span><span class="text-gold-500">BRES</span>
+                        <span class="text-text">CUM</span><span class="text-primary">BRES</span>
                     </a>
-                    <p class="mt-1 text-xs tracking-widest text-cream-100/50 uppercase">Panel Admin</p>
+                    <p class="mt-1 text-xs tracking-widest text-text-muted uppercase">Panel Admin</p>
                 </div>
 
                 <nav class="mt-4 flex flex-col gap-1 px-3 font-display text-sm font-medium tracking-wide">
@@ -43,7 +51,7 @@
                         <a
                             href="{{ route($link['route']) }}"
                             wire:navigate
-                            class="rounded px-3 py-2 transition {{ request()->routeIs($link['route']) ? 'bg-gold-500 text-cumbre-950' : 'text-cream-100/80 hover:bg-cumbre-800' }}"
+                            class="rounded px-3 py-2 transition {{ request()->routeIs($link['route']) ? 'bg-primary text-primary-on' : 'text-text/80 hover:bg-surface' }}"
                         >
                             {{ $link['label'] }}
                         </a>
@@ -51,16 +59,25 @@
                 </nav>
 
                 <div class="mt-auto px-3 py-6">
-                    <a href="{{ route('home') }}" wire:navigate class="block rounded px-3 py-2 text-sm text-cream-100/60 transition hover:bg-cumbre-800">← Ver tienda</a>
+                    <button
+                        type="button"
+                        data-theme-toggle
+                        class="mb-2 flex w-full items-center gap-2 rounded px-3 py-2 text-sm text-text/80 transition hover:bg-surface"
+                        aria-label="Cambiar tema"
+                    >
+                        <span data-theme-icon class="grid h-5 w-5 place-items-center rounded-full bg-primary text-[.7rem] text-primary-on">☾</span>
+                        <span data-theme-label>Oscuro</span>
+                    </button>
+                    <a href="{{ route('home') }}" wire:navigate class="block rounded px-3 py-2 text-sm text-text/60 transition hover:bg-surface">← Ver tienda</a>
                     <form method="POST" action="{{ route('logout') }}" class="mt-1">
                         @csrf
-                        <button type="submit" class="w-full rounded px-3 py-2 text-left text-sm text-cream-100/60 transition hover:bg-cumbre-800">Cerrar sesión</button>
+                        <button type="submit" class="w-full rounded px-3 py-2 text-left text-sm text-text/60 transition hover:bg-surface">Cerrar sesión</button>
                     </form>
                 </div>
             </aside>
 
             <div class="flex-1">
-                <header class="border-b border-cumbre-700/60 bg-cumbre-950 px-8 py-5">
+                <header class="border-b border-border bg-surface px-8 py-5">
                     <h1 class="font-display text-lg font-semibold tracking-wide">{{ $title ?? 'Dashboard' }}</h1>
                 </header>
 
