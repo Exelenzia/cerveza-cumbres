@@ -85,6 +85,8 @@ class Phase2SmokeTest extends TestCase
         Livewire::test(Checkout::class)
             ->set('customer_name', 'Cliente Prueba')
             ->set('customer_email', 'cliente@example.com')
+            ->set('customer_document_type', Order::DOCUMENT_DNI)
+            ->set('customer_document_number', '12345678')
             ->set('shipping_address', 'Av. Siempre Viva 123')
             ->set('shipping_city', 'Lima')
             ->call('proceedToPayment')
@@ -98,6 +100,8 @@ class Phase2SmokeTest extends TestCase
         $this->assertEquals(25.00, $order->total);
         $this->assertSame('chr_test_123', $order->payment_reference);
         $this->assertSame(1, $order->items()->count());
+        $this->assertSame(Order::DOCUMENT_DNI, $order->customer_document_type);
+        $this->assertSame('12345678', $order->customer_document_number);
     }
 
     public function test_order_show_authorizes_owner_and_blocks_other_users(): void

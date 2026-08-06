@@ -30,6 +30,9 @@
                             ['route' => 'admin.packs.index', 'label' => 'Packs'],
                             ['route' => 'admin.shipping.zones', 'label' => 'Envíos'],
                             ['route' => 'admin.coupons.index', 'label' => 'Cupones'],
+                            ['route' => 'admin.cms.pages.index', 'label' => 'Páginas (CMS)'],
+                            ['route' => 'admin.sunat.settings', 'label' => 'Facturación SUNAT'],
+                            ['route' => 'admin.whatsapp.settings', 'label' => 'WhatsApp'],
                             ['route' => 'admin.settings.index', 'label' => 'Configuración'],
                         ];
                     @endphp

@@ -26,6 +26,19 @@
                         <input type="text" wire:model="shipping_city" class="w-full rounded-lg border border-cumbre-700 bg-cumbre-950 px-3 py-2 text-cream-50 focus:border-gold-500 focus:outline-none">
                         @error('shipping_city') <span class="text-sm text-red-400">{{ $message }}</span> @enderror
                     </div>
+                    <div>
+                        <label class="mb-1 block text-sm text-cream-200">Comprobante</label>
+                        <select wire:model.live="customer_document_type" class="w-full rounded-lg border border-cumbre-700 bg-cumbre-950 px-3 py-2 text-cream-50 focus:border-gold-500 focus:outline-none">
+                            <option value="dni">Boleta (DNI)</option>
+                            <option value="ruc">Factura (RUC)</option>
+                        </select>
+                        @error('customer_document_type') <span class="text-sm text-red-400">{{ $message }}</span> @enderror
+                    </div>
+                    <div>
+                        <label class="mb-1 block text-sm text-cream-200">{{ $customer_document_type === 'ruc' ? 'RUC' : 'DNI' }}</label>
+                        <input type="text" wire:model="customer_document_number" maxlength="11" class="w-full rounded-lg border border-cumbre-700 bg-cumbre-950 px-3 py-2 text-cream-50 focus:border-gold-500 focus:outline-none">
+                        @error('customer_document_number') <span class="text-sm text-red-400">{{ $message }}</span> @enderror
+                    </div>
                 </div>
 
                 @if ($shippingZones->isNotEmpty())

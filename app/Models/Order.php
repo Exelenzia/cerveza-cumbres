@@ -10,11 +10,16 @@ use Illuminate\Support\Str;
 
 #[Fillable([
     'order_number', 'user_id', 'shipping_zone_id', 'status', 'customer_name', 'customer_email', 'customer_phone',
-    'shipping_address', 'shipping_city', 'notes', 'subtotal', 'discount_amount', 'shipping_cost', 'total',
-    'currency', 'payment_method', 'payment_reference', 'coupon_code', 'paid_at',
+    'customer_document_type', 'customer_document_number', 'shipping_address', 'shipping_city', 'notes', 'subtotal',
+    'discount_amount', 'shipping_cost', 'total', 'currency', 'payment_method', 'payment_reference', 'coupon_code',
+    'paid_at',
 ])]
 class Order extends Model
 {
+    public const DOCUMENT_DNI = 'dni';
+
+    public const DOCUMENT_RUC = 'ruc';
+
     public const STATUS_PENDING = 'pending';
 
     public const STATUS_PAID = 'paid';
@@ -76,6 +81,11 @@ class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class);
     }
 
     public function shippingZone(): BelongsTo

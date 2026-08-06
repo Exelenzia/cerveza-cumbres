@@ -12,6 +12,7 @@ use App\Services\Cart\CouponException;
 use App\Services\Cart\CouponService;
 use App\Services\Culqi\CulqiChargeException;
 use App\Services\Culqi\CulqiService;
+use App\Services\WhatsApp\WhatsAppService;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -24,6 +25,10 @@ class Checkout extends Component
     public string $customer_email = '';
 
     public string $customer_phone = '';
+
+    public string $customer_document_type = Order::DOCUMENT_DNI;
+
+    public string $customer_document_number = '';
 
     public string $shipping_address = '';
 
@@ -76,6 +81,10 @@ class Checkout extends Component
             'customer_name' => 'required|string|max:255',
             'customer_email' => 'required|email|max:255',
             'customer_phone' => 'nullable|string|max:30',
+            'customer_document_type' => 'required|in:dni,ruc',
+            'customer_document_number' => $this->customer_document_type === Order::DOCUMENT_RUC
+                ? 'required|digits:11'
+                : 'required|digits:8',
             'shipping_address' => 'required|string|max:255',
             'shipping_city' => 'required|string|max:255',
             'notes' => 'nullable|string|max:500',
@@ -152,6 +161,8 @@ class Checkout extends Component
                 'customer_name' => $this->customer_name,
                 'customer_email' => $this->customer_email,
                 'customer_phone' => $this->customer_phone ?: null,
+                'customer_document_type' => $this->customer_document_type,
+                'customer_document_number' => $this->customer_document_number,
                 'shipping_address' => $this->shipping_address,
                 'shipping_city' => $this->shipping_city,
                 'notes' => $this->notes ?: null,
@@ -184,6 +195,8 @@ class Checkout extends Component
 
             return $order;
         });
+
+        app(WhatsAppService::class)->notifyOrderConfirmed($order);
 
         $cart->clear();
         $this->dispatch('cart-updated');

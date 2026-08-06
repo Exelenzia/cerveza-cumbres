@@ -62,6 +62,42 @@
                 @endif
                 <p class="mt-2 text-sm text-cream-200/60">Ref: {{ $order->payment_reference ?? '—' }}</p>
             </div>
+
+            <div class="rounded-xl border border-cumbre-700 bg-cumbre-900 p-6">
+                <h2 class="mb-3 font-display text-lg uppercase tracking-wide text-cream-50">Comprobante electrónico</h2>
+
+                @if ($invoiceError)
+                    <div class="mb-3 rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+                        {{ $invoiceError }}
+                    </div>
+                @endif
+
+                @forelse ($invoices as $invoice)
+                    <div class="mb-2 rounded-lg border border-cumbre-800 px-3 py-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-cream-100">{{ $invoice->tipoLabel() }} {{ $invoice->numeroCompleto() }}</span>
+                            <span class="{{ $invoice->estado === 'aceptado' ? 'text-green-400' : ($invoice->estado === 'error' || $invoice->estado === 'rechazado' ? 'text-red-400' : 'text-gold-400') }}">
+                                {{ ucfirst($invoice->estado) }}
+                            </span>
+                        </div>
+                        @if ($invoice->sunat_response_description)
+                            <p class="mt-1 text-xs text-cream-200/60">{{ $invoice->sunat_response_description }}</p>
+                        @endif
+                    </div>
+                @empty
+                    <p class="mb-3 text-sm text-cream-200/60">Este pedido aún no tiene comprobante emitido.</p>
+                @endforelse
+
+                <div class="mt-3 flex items-center gap-2">
+                    <select wire:model="tipoComprobante" class="rounded-lg border border-cumbre-700 bg-cumbre-950 px-3 py-2 text-sm text-cream-50 focus:border-gold-500 focus:outline-none">
+                        <option value="03">Boleta</option>
+                        <option value="01">Factura</option>
+                    </select>
+                    <button wire:click="issueInvoice" wire:loading.attr="disabled" class="flex-1 rounded-lg bg-gold-500 px-4 py-2 text-sm font-semibold text-cumbre-950 hover:bg-gold-400 disabled:opacity-50">
+                        Emitir comprobante
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

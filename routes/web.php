@@ -3,12 +3,16 @@
 use App\Livewire\Admin\Catalog\Categories;
 use App\Livewire\Admin\Catalog\Packs;
 use App\Livewire\Admin\Catalog\Products;
+use App\Livewire\Admin\Cms\PageEditor as AdminCmsPageEditor;
+use App\Livewire\Admin\Cms\Pages as AdminCmsPages;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Marketing\Coupons as AdminCoupons;
 use App\Livewire\Admin\Orders\Index as AdminOrdersIndex;
 use App\Livewire\Admin\Orders\Show as AdminOrdersShow;
 use App\Livewire\Admin\Settings as AdminSettings;
 use App\Livewire\Admin\Shipping\Zones as AdminShippingZones;
+use App\Livewire\Admin\Sunat\Settings as AdminSunatSettings;
+use App\Livewire\Admin\WhatsApp\Settings as AdminWhatsAppSettings;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Storefront\Cart;
@@ -16,6 +20,7 @@ use App\Livewire\Storefront\Checkout;
 use App\Livewire\Storefront\Home;
 use App\Livewire\Storefront\OrderShow;
 use App\Livewire\Storefront\Orders;
+use App\Livewire\Storefront\PageShow;
 use App\Livewire\Storefront\Shop;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +30,7 @@ Route::get('/tienda', Shop::class)->name('shop');
 Route::get('/carrito', Cart::class)->name('cart');
 Route::get('/checkout', Checkout::class)->name('checkout');
 Route::get('/pedidos/{order}', OrderShow::class)->name('orders.show');
+Route::get('/paginas/{page:slug}', PageShow::class)->name('pages.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/mis-pedidos', Orders::class)->name('orders.index');
@@ -52,5 +58,9 @@ Route::middleware(['auth', 'role:admin|staff'])->prefix('admin')->name('admin.')
     Route::get('/pedidos/{order}', AdminOrdersShow::class)->name('orders.show');
     Route::get('/envios', AdminShippingZones::class)->name('shipping.zones');
     Route::get('/cupones', AdminCoupons::class)->name('coupons.index');
+    Route::get('/paginas', AdminCmsPages::class)->name('cms.pages.index');
+    Route::get('/paginas/{page}', AdminCmsPageEditor::class)->name('cms.pages.edit');
+    Route::get('/facturacion-sunat', AdminSunatSettings::class)->name('sunat.settings');
+    Route::get('/whatsapp', AdminWhatsAppSettings::class)->name('whatsapp.settings');
     Route::get('/configuracion', AdminSettings::class)->name('settings.index');
 });
