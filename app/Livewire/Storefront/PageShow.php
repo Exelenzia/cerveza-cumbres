@@ -21,9 +21,9 @@ class PageShow extends Component
         $this->page = $page;
     }
 
-    public function addToCart(string $type, int $id): void
+    public function addToCart(string $type, int $id, ?int $variantId = null): void
     {
-        app(CartService::class)->add($type, $id);
+        app(CartService::class)->add($type, $id, variantId: $variantId);
         $this->dispatch('cart-updated');
     }
 
@@ -34,6 +34,7 @@ class PageShow extends Component
         if (($data['source'] ?? 'popular') === 'category' && ! empty($data['category_id'])) {
             return Product::where('is_active', true)
                 ->where('category_id', $data['category_id'])
+                ->with('variants')
                 ->orderBy('sort_order')
                 ->take($limit)
                 ->get();
@@ -41,6 +42,7 @@ class PageShow extends Component
 
         return Product::where('is_active', true)
             ->where('is_popular', true)
+            ->with('variants')
             ->orderBy('sort_order')
             ->take($limit)
             ->get();

@@ -29,6 +29,7 @@
                             ['route' => 'admin.categories.index', 'label' => 'Categorías'],
                             ['route' => 'admin.products.index', 'label' => 'Productos'],
                             ['route' => 'admin.packs.index', 'label' => 'Packs'],
+                            ['route' => 'admin.pack-templates.index', 'label' => 'Armador de packs'],
                             ['route' => 'admin.shipping.zones', 'label' => 'Envíos'],
                             ['route' => 'admin.coupons.index', 'label' => 'Cupones'],
                             ['route' => 'admin.cms.pages.index', 'label' => 'Páginas (CMS)'],

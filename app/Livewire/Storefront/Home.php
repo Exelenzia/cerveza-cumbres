@@ -11,9 +11,9 @@ use Livewire\Component;
 #[Layout('layouts.storefront')]
 class Home extends Component
 {
-    public function addToCart(string $type, int $id): void
+    public function addToCart(string $type, int $id, ?int $variantId = null): void
     {
-        app(CartService::class)->add($type, $id);
+        app(CartService::class)->add($type, $id, variantId: $variantId);
         $this->dispatch('cart-updated');
     }
 
@@ -21,7 +21,7 @@ class Home extends Component
     {
         return view('livewire.storefront.home', [
             'categories' => Category::orderBy('sort_order')->withCount('products')->get(),
-            'popularProducts' => Product::where('is_active', true)->where('is_popular', true)->orderBy('sort_order')->take(4)->get(),
+            'popularProducts' => Product::where('is_active', true)->where('is_popular', true)->with('variants')->orderBy('sort_order')->take(4)->get(),
         ]);
     }
 }

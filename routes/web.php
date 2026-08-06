@@ -2,6 +2,7 @@
 
 use App\Livewire\Admin\Catalog\Categories;
 use App\Livewire\Admin\Catalog\Packs;
+use App\Livewire\Admin\Catalog\PackTemplates;
 use App\Livewire\Admin\Catalog\Products;
 use App\Livewire\Admin\Cms\PageEditor as AdminCmsPageEditor;
 use App\Livewire\Admin\Cms\Pages as AdminCmsPages;
@@ -21,6 +22,7 @@ use App\Livewire\Storefront\Checkout;
 use App\Livewire\Storefront\Home;
 use App\Livewire\Storefront\OrderShow;
 use App\Livewire\Storefront\Orders;
+use App\Livewire\Storefront\PackBuilder;
 use App\Livewire\Storefront\PageShow;
 use App\Livewire\Storefront\Shop;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +30,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', Home::class)->name('home');
 Route::get('/tienda', Shop::class)->name('shop');
+Route::get('/tienda/armar-pack/{template:slug}', PackBuilder::class)->name('pack-builder.show');
 Route::get('/carrito', Cart::class)->name('cart');
 Route::get('/checkout', Checkout::class)->name('checkout');
 Route::get('/pedidos/{order}', OrderShow::class)->name('orders.show');
@@ -55,6 +58,7 @@ Route::middleware(['auth', 'role:admin|staff'])->prefix('admin')->name('admin.')
     Route::get('/categorias', Categories::class)->name('categories.index');
     Route::get('/productos', Products::class)->name('products.index');
     Route::get('/packs', Packs::class)->name('packs.index');
+    Route::get('/armador-de-packs', PackTemplates::class)->name('pack-templates.index');
     Route::get('/pedidos', AdminOrdersIndex::class)->name('orders.index');
     Route::get('/pedidos/{order}', AdminOrdersShow::class)->name('orders.show');
     Route::get('/reportes', AdminReports::class)->name('reports.index');

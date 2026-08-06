@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Catalog;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductVariant;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -46,6 +47,17 @@ class Products extends Component
 
     public $image = null;
 
+    public string $fixed_pack6_price = '';
+
+    public bool $is_mix_premium = false;
+
+    public string $mix_surcharge_per_unit = '';
+
+    public bool $has_variants = false;
+
+    /** @var array<int, array{label: string, price_override: string, stock: int}> */
+    public array $variants = [];
+
     public function create(): void
     {
         $this->resetForm();
@@ -54,7 +66,7 @@ class Products extends Component
 
     public function edit(int $id): void
     {
-        $product = Product::findOrFail($id);
+        $product = Product::with('variants')->findOrFail($id);
 
         $this->editingId = $product->id;
         $this->category_id = $product->category_id;
@@ -71,7 +83,27 @@ class Products extends Component
         $this->is_active = $product->is_active;
         $this->sort_order = $product->sort_order;
         $this->image = null;
+        $this->fixed_pack6_price = (string) $product->fixed_pack6_price;
+        $this->is_mix_premium = $product->is_mix_premium;
+        $this->mix_surcharge_per_unit = (string) $product->mix_surcharge_per_unit;
+        $this->variants = $product->variants->map(fn (ProductVariant $variant) => [
+            'label' => $variant->label,
+            'price_override' => (string) $variant->price_override,
+            'stock' => $variant->stock,
+        ])->all();
+        $this->has_variants = $product->variants->isNotEmpty();
         $this->showForm = true;
+    }
+
+    public function addVariant(): void
+    {
+        $this->variants[] = ['label' => '', 'price_override' => '', 'stock' => 0];
+    }
+
+    public function removeVariant(int $index): void
+    {
+        unset($this->variants[$index]);
+        $this->variants = array_values($this->variants);
     }
 
     public function save(): void
@@ -91,10 +123,22 @@ class Products extends Component
             'is_active' => 'boolean',
             'sort_order' => 'integer|min:0',
             'image' => 'nullable|image|max:4096',
+            'fixed_pack6_price' => 'nullable|numeric|min:0',
+            'is_mix_premium' => 'boolean',
+            'mix_surcharge_per_unit' => 'nullable|numeric|min:0',
+            'variants' => 'array',
+            'variants.*.label' => 'required_with:variants|string|max:255',
+            'variants.*.price_override' => 'nullable|numeric|min:0',
+            'variants.*.stock' => 'integer|min:0',
         ]);
 
         unset($data['image']);
+        $variants = $this->has_variants ? $data['variants'] : [];
+        unset($data['variants']);
+
         $data['compare_at_price'] = $data['compare_at_price'] ?: null;
+        $data['fixed_pack6_price'] = $data['fixed_pack6_price'] ?: null;
+        $data['mix_surcharge_per_unit'] = $data['mix_surcharge_per_unit'] ?: null;
 
         if ($this->editingId) {
             $product = Product::findOrFail($this->editingId);
@@ -109,6 +153,17 @@ class Products extends Component
             $product->addMedia($this->image->getRealPath())
                 ->usingFileName($this->image->getClientOriginalName())
                 ->toMediaCollection('images');
+        }
+
+        $product->variants()->delete();
+
+        foreach ($variants as $index => $variant) {
+            $product->variants()->create([
+                'label' => $variant['label'],
+                'price_override' => $variant['price_override'] !== '' ? $variant['price_override'] : null,
+                'stock' => $variant['stock'],
+                'sort_order' => $index,
+            ]);
         }
 
         $this->resetForm();
@@ -131,7 +186,8 @@ class Products extends Component
         $this->reset([
             'editingId', 'category_id', 'name', 'style', 'description', 'abv', 'ibu',
             'volume_ml', 'price', 'compare_at_price', 'stock', 'is_popular', 'is_active',
-            'sort_order', 'image',
+            'sort_order', 'image', 'fixed_pack6_price', 'is_mix_premium', 'mix_surcharge_per_unit',
+            'has_variants', 'variants',
         ]);
         $this->is_active = true;
         $this->stock = 0;

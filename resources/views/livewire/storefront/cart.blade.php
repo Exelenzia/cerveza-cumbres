@@ -12,9 +12,21 @@
         <div class="space-y-4">
             @foreach ($items as $item)
                 <div class="flex items-center gap-4 rounded-xl border border-cumbre-700 bg-cumbre-900 p-4">
-                    <img src="{{ $item['model']->cover_url }}" alt="{{ $item['model']->name }}" class="h-16 w-16 rounded-lg object-cover">
+                    @if ($item['type'] === 'custom_pack')
+                        <div class="flex h-16 w-16 items-center justify-center rounded-lg bg-cumbre-950 text-xs font-semibold uppercase text-gold-400">Pack</div>
+                    @else
+                        <img src="{{ $item['model']->cover_url }}" alt="{{ $item['model']->name }}" class="h-16 w-16 rounded-lg object-cover">
+                    @endif
                     <div class="flex-1">
                         <p class="font-display text-lg text-cream-50">{{ $item['model']->name }}</p>
+                        @if ($item['type'] === 'product' && $item['variant'])
+                            <p class="text-sm text-cream-200/60">Variante: {{ $item['variant']->label }}</p>
+                        @endif
+                        @if ($item['type'] === 'custom_pack')
+                            <p class="text-sm text-cream-200/60">
+                                {{ $item['composition']->map(fn ($line) => "{$line['quantity']}× {$line['name']}")->implode(', ') }}
+                            </p>
+                        @endif
                         <p class="text-sm text-cream-200/60">S/ {{ number_format($item['unitPrice'], 2) }} c/u</p>
                         @if ($item['quantity'] > $item['availableStock'])
                             <p class="mt-1 text-sm text-red-400">

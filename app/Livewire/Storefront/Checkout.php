@@ -5,6 +5,8 @@ namespace App\Livewire\Storefront;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
+use App\Models\ProductVariant;
 use App\Models\Setting;
 use App\Models\ShippingZone;
 use App\Services\Cart\CartService;
@@ -157,9 +159,21 @@ class Checkout extends Component
 
         $stock = app(StockReservationService::class);
         $requirements = $cart->productRequirements($items);
-        $shortProductId = $stock->reserve($requirements);
+        $variantRequirements = $cart->variantRequirements($items);
+
+        $shortProductId = $stock->reserve(Product::class, $requirements);
 
         if ($shortProductId !== null) {
+            $this->paymentError = 'Uno de los productos de tu carrito ya no tiene stock suficiente. Actualiza tu carrito e intenta de nuevo.';
+            $this->processing = false;
+
+            return;
+        }
+
+        $shortVariantId = $stock->reserve(ProductVariant::class, $variantRequirements);
+
+        if ($shortVariantId !== null) {
+            $stock->release(Product::class, $requirements);
             $this->paymentError = 'Uno de los productos de tu carrito ya no tiene stock suficiente. Actualiza tu carrito e intenta de nuevo.';
             $this->processing = false;
 
@@ -169,7 +183,8 @@ class Checkout extends Component
         try {
             $chargeId = app(CulqiService::class)->charge($token, $total, $this->customer_email);
         } catch (CulqiChargeException $e) {
-            $stock->release($requirements);
+            $stock->release(Product::class, $requirements);
+            $stock->release(ProductVariant::class, $variantRequirements);
             $this->paymentError = $e->getMessage();
             $this->processing = false;
 
@@ -205,6 +220,10 @@ class Checkout extends Component
                     'order_id' => $order->id,
                     'product_id' => $item['type'] === 'product' ? $item['model']->id : null,
                     'pack_id' => $item['type'] === 'pack' ? $item['model']->id : null,
+                    'pack_template_id' => $item['type'] === 'custom_pack' ? $item['template']->id : null,
+                    'composition' => $item['type'] === 'custom_pack' ? $item['composition']->toArray() : null,
+                    'variant_id' => $item['variant']?->id,
+                    'variant_label' => $item['variant']?->label,
                     'name' => $item['model']->name,
                     'unit_price' => $item['unitPrice'],
                     'quantity' => $item['quantity'],

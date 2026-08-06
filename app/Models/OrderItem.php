@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable([
     'order_id', 'product_id', 'pack_id', 'name', 'unit_price', 'quantity', 'subtotal',
     'unit_code', 'igv_affectation_code',
+    'pack_template_id', 'composition', 'variant_id', 'variant_label',
 ])]
 class OrderItem extends Model
 {
@@ -17,6 +18,7 @@ class OrderItem extends Model
         return [
             'unit_price' => 'decimal:2',
             'subtotal' => 'decimal:2',
+            'composition' => 'array',
         ];
     }
 
@@ -33,5 +35,15 @@ class OrderItem extends Model
     public function pack(): BelongsTo
     {
         return $this->belongsTo(Pack::class);
+    }
+
+    public function packTemplate(): BelongsTo
+    {
+        return $this->belongsTo(PackTemplate::class);
+    }
+
+    public function variant(): BelongsTo
+    {
+        return $this->belongsTo(ProductVariant::class, 'variant_id');
     }
 }

@@ -2,44 +2,46 @@
 
 namespace App\Services\Cart;
 
-use App\Models\Product;
+use Illuminate\Database\Eloquent\Model;
 
 class StockReservationService
 {
     /**
-     * Atomically decrement stock for each product, failing fast (and rolling back
-     * any decrements already applied in this call) if any product no longer has
+     * Atomically decrement stock for each record, failing fast (and rolling back
+     * any decrements already applied in this call) if any record no longer has
      * enough stock. Each decrement is its own conditional UPDATE, so it's race-safe
      * without holding a transaction open across it.
      *
-     * @param  array<int, int>  $requirements  product id => quantity required
+     * @param  class-string<Model>  $modelClass  Product::class or ProductVariant::class — both expose a `stock` column
+     * @param  array<int, int>  $requirements  record id => quantity required
      */
-    public function reserve(array $requirements): ?int
+    public function reserve(string $modelClass, array $requirements): ?int
     {
         $reserved = [];
 
-        foreach ($requirements as $productId => $quantity) {
-            $affected = Product::where('id', $productId)->where('stock', '>=', $quantity)->decrement('stock', $quantity);
+        foreach ($requirements as $id => $quantity) {
+            $affected = $modelClass::where('id', $id)->where('stock', '>=', $quantity)->decrement('stock', $quantity);
 
             if ($affected === 0) {
-                $this->release($reserved);
+                $this->release($modelClass, $reserved);
 
-                return $productId;
+                return $id;
             }
 
-            $reserved[$productId] = $quantity;
+            $reserved[$id] = $quantity;
         }
 
         return null;
     }
 
     /**
-     * @param  array<int, int>  $requirements  product id => quantity to restore
+     * @param  class-string<Model>  $modelClass
+     * @param  array<int, int>  $requirements  record id => quantity to restore
      */
-    public function release(array $requirements): void
+    public function release(string $modelClass, array $requirements): void
     {
-        foreach ($requirements as $productId => $quantity) {
-            Product::where('id', $productId)->increment('stock', $quantity);
+        foreach ($requirements as $id => $quantity) {
+            $modelClass::where('id', $id)->increment('stock', $quantity);
         }
     }
 }

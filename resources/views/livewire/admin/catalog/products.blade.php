@@ -92,6 +92,60 @@
                     @endif
                 </div>
 
+                <div class="rounded-lg border border-cumbre-700 p-4">
+                    <h4 class="mb-3 text-sm font-semibold uppercase tracking-wide text-cream-200">Precios de pack</h4>
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                        <div>
+                            <label class="mb-1 block text-sm text-cream-200">Precio Pack 6 Fijo (S/)</label>
+                            <input type="number" step="0.01" wire:model="fixed_pack6_price" class="w-full rounded-lg border border-cumbre-700 bg-cumbre-950 px-3 py-2 text-cream-50 focus:border-gold-500 focus:outline-none">
+                            @error('fixed_pack6_price') <span class="text-sm text-red-400">{{ $message }}</span> @enderror
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-sm text-cream-200">Recargo por unidad en Mix (S/)</label>
+                            <input type="number" step="0.01" wire:model="mix_surcharge_per_unit" class="w-full rounded-lg border border-cumbre-700 bg-cumbre-950 px-3 py-2 text-cream-50 focus:border-gold-500 focus:outline-none">
+                            @error('mix_surcharge_per_unit') <span class="text-sm text-red-400">{{ $message }}</span> @enderror
+                        </div>
+                        <div class="flex items-end">
+                            <label class="flex items-center gap-2 text-sm text-cream-200">
+                                <input type="checkbox" wire:model="is_mix_premium" class="rounded border-cumbre-700 bg-cumbre-950 text-gold-500">
+                                Estilo premium en Mix
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-lg border border-cumbre-700 p-4">
+                    <label class="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-cream-200">
+                        <input type="checkbox" wire:model.live="has_variants" class="rounded border-cumbre-700 bg-cumbre-950 text-gold-500">
+                        Este producto tiene variantes (tallas, modelos...)
+                    </label>
+
+                    @if ($has_variants)
+                        <div class="mt-4 space-y-3">
+                            @foreach ($variants as $index => $variant)
+                                <div class="grid grid-cols-1 gap-3 md:grid-cols-[2fr_1fr_1fr_auto] md:items-end">
+                                    <div>
+                                        <label class="mb-1 block text-sm text-cream-200">Etiqueta</label>
+                                        <input type="text" wire:model="variants.{{ $index }}.label" placeholder="S, M, L..." class="w-full rounded-lg border border-cumbre-700 bg-cumbre-950 px-3 py-2 text-cream-50 focus:border-gold-500 focus:outline-none">
+                                        @error("variants.{$index}.label") <span class="text-sm text-red-400">{{ $message }}</span> @enderror
+                                    </div>
+                                    <div>
+                                        <label class="mb-1 block text-sm text-cream-200">Precio (opcional)</label>
+                                        <input type="number" step="0.01" wire:model="variants.{{ $index }}.price_override" placeholder="Usa el precio base" class="w-full rounded-lg border border-cumbre-700 bg-cumbre-950 px-3 py-2 text-cream-50 focus:border-gold-500 focus:outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="mb-1 block text-sm text-cream-200">Stock</label>
+                                        <input type="number" wire:model="variants.{{ $index }}.stock" class="w-full rounded-lg border border-cumbre-700 bg-cumbre-950 px-3 py-2 text-cream-50 focus:border-gold-500 focus:outline-none">
+                                    </div>
+                                    <button type="button" wire:click="removeVariant({{ $index }})" class="rounded-lg border border-cumbre-700 px-3 py-2 text-sm text-red-400 hover:border-red-400">Quitar</button>
+                                </div>
+                            @endforeach
+
+                            <button type="button" wire:click="addVariant" class="rounded-lg border border-cumbre-700 px-3 py-2 text-sm text-cream-200 hover:border-gold-500">+ Agregar variante</button>
+                        </div>
+                    @endif
+                </div>
+
                 <div class="flex gap-3 pt-2">
                     <button type="submit" class="rounded-lg bg-gold-500 px-4 py-2 text-sm font-semibold text-cumbre-950 hover:bg-gold-400">Guardar</button>
                     <button type="button" wire:click="cancel" class="rounded-lg border border-cumbre-700 px-4 py-2 text-sm text-cream-200 hover:border-gold-500">Cancelar</button>
