@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Livewire\Storefront;
+
+use App\Models\Category;
+use App\Models\Product;
+use App\Services\Cart\CartService;
+use Livewire\Attributes\Layout;
+use Livewire\Component;
+
+#[Layout('layouts.storefront')]
+class Home extends Component
+{
+    public function addToCart(string $type, int $id): void
+    {
+        app(CartService::class)->add($type, $id);
+        $this->dispatch('cart-updated');
+    }
+
+    public function render()
+    {
+        return view('livewire.storefront.home', [
+            'categories' => Category::orderBy('sort_order')->withCount('products')->get(),
+            'popularProducts' => Product::where('is_active', true)->where('is_popular', true)->orderBy('sort_order')->take(4)->get(),
+        ]);
+    }
+}

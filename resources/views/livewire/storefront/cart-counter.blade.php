@@ -1,0 +1,10 @@
+<a href="{{ route('cart') }}" wire:navigate class="relative flex items-center gap-2 text-cream-100 hover:text-gold-400">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 1.85-4.807 2.15-7.436a1.128 1.128 0 0 0-.83-1.243.783.783 0 0 0-.117-.021L5.106 5.272M7.5 14.25 5.106 5.272M6 18.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm9.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+    </svg>
+    @if ($count > 0)
+        <span class="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-gold-500 text-xs font-semibold text-cumbre-950">
+            {{ $count }}
+        </span>
+    @endif
+</a>
