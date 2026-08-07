@@ -36,17 +36,17 @@
 
         <header class="sticky top-0 z-40 border-b-[3px] border-text bg-surface/95 backdrop-blur">
             <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-                <a href="{{ route('home') }}" wire:navigate class="badge-brutal bg-surface-elevated px-3 py-1 font-display text-2xl font-semibold tracking-wide -rotate-1">
-                    <span class="text-text">CUM</span><span class="text-primary">BRES</span>
+                <a href="{{ route('home') }}" wire:navigate class="badge-brutal flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden bg-cream-50 -rotate-1" aria-label="Cumbres — inicio">
+                    <img src="{{ asset('images/logo-isotipo.jpg') }}" alt="Cumbres" class="h-[82%] w-[82%] object-contain">
                 </a>
 
-                <nav class="hidden items-center gap-10 font-display text-sm font-bold tracking-[0.22em] text-text/90 uppercase md:flex">
+                <nav class="hidden items-center gap-10 font-display text-sm font-medium tracking-[0.22em] text-text/90 uppercase md:flex">
                     <a href="{{ route('shop') }}" wire:navigate class="transition hover:text-primary">Tienda</a>
                     <a href="{{ route('home') }}#lineas" class="transition hover:text-primary">Líneas Cerveceras</a>
                     <a href="{{ route('home') }}#historia" class="transition hover:text-primary">Historia</a>
                 </nav>
 
-                <div class="flex items-center gap-5 font-display text-sm font-bold tracking-[0.22em] uppercase">
+                <div class="flex items-center gap-5 font-display text-sm font-medium tracking-[0.22em] uppercase">
                     <livewire:storefront.cart-counter />
                     @auth
                         @if (auth()->user()->hasAnyRole(['admin', 'staff']))

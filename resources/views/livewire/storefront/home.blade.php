@@ -6,15 +6,16 @@
             <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/20 to-transparent"></div>
         </div>
 
-        <div class="relative mx-auto flex max-w-7xl flex-col items-start px-6 py-24 sm:py-32">
+        <div class="relative mx-auto flex max-w-7xl flex-col items-center px-6 py-24 text-center sm:py-32">
             <span class="badge-brutal mb-6 bg-secondary px-3 py-1 text-sm font-bold uppercase tracking-[0.3em] text-surface">Cerveza artesanal &middot; Perú</span>
-            <h1 class="text-brutal-hero font-display uppercase text-text" data-reveal>
-                Cumbres
-            </h1>
-            <p class="mt-6 max-w-xl font-serif text-lg italic text-text/80" data-reveal>
+            <div class="mx-auto w-56 sm:w-72 md:w-80" data-reveal>
+                <img src="{{ asset('images/logo-cumbres-dark.png') }}" alt="Cumbres" class="light:hidden w-full drop-shadow-2xl">
+                <img src="{{ asset('images/logo-cumbres-light.png') }}" alt="Cumbres" class="hidden light:block w-full drop-shadow-2xl">
+            </div>
+            <p class="mx-auto mt-6 max-w-xl font-serif text-lg italic text-text/80" data-reveal>
                 "Cerveza artesanal nacida en las alturas, para los que saben."
             </p>
-            <div class="mt-10 flex flex-wrap gap-4" data-reveal>
+            <div class="mt-10 flex flex-wrap justify-center gap-4" data-reveal>
                 <a href="{{ route('shop') }}" class="btn-brutal bg-primary px-8 py-3 font-display font-bold uppercase tracking-wide text-primary-on">
                     Ver tienda
                 </a>
