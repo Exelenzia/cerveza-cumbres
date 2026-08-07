@@ -30,6 +30,31 @@ document.addEventListener('click', (event) => {
     applyTheme(next);
 });
 
-document.addEventListener('livewire:navigated', () => applyTheme(storedTheme()));
+let revealObserver = null;
+
+function initScrollReveal() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    if (!revealObserver) {
+        revealObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('is-visible');
+                    revealObserver.unobserve(entry.target);
+                });
+            },
+            { threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
+        );
+    }
+
+    document.querySelectorAll('[data-reveal]:not(.is-visible)').forEach((el) => revealObserver.observe(el));
+}
+
+document.addEventListener('livewire:navigated', () => {
+    applyTheme(storedTheme());
+    initScrollReveal();
+});
 
 applyTheme(storedTheme());
+initScrollReveal();

@@ -1,18 +1,18 @@
 <div class="space-y-6">
     <div class="flex flex-wrap items-center gap-3">
-        <button wire:click="$set('status', '')" class="rounded-full border px-4 py-1.5 text-sm font-semibold transition {{ $status === '' ? 'border-primary bg-primary text-primary-on' : 'border-border text-text-muted hover:border-primary' }}">
+        <button wire:click="$set('status', '')" class="border-[2px] px-4 py-1.5 text-sm font-display font-bold uppercase tracking-wide transition {{ $status === '' ? 'border-text bg-primary text-primary-on' : 'border-text/30 text-text-muted hover:border-text' }}">
             Todos
         </button>
         @foreach ($statuses as $s)
-            <button wire:click="$set('status', '{{ $s }}')" class="rounded-full border px-4 py-1.5 text-sm font-semibold capitalize transition {{ $status === $s ? 'border-primary bg-primary text-primary-on' : 'border-border text-text-muted hover:border-primary' }}">
+            <button wire:click="$set('status', '{{ $s }}')" class="border-[2px] px-4 py-1.5 text-sm font-display font-bold uppercase tracking-wide transition {{ $status === $s ? 'border-text bg-primary text-primary-on' : 'border-text/30 text-text-muted hover:border-text' }}">
                 {{ $s }}
             </button>
         @endforeach
     </div>
 
-    <div class="overflow-hidden rounded-xl border border-border">
+    <div class="card-brutal overflow-hidden">
         <table class="w-full text-left text-sm">
-            <thead class="bg-surface-elevated text-text-muted/70">
+            <thead class="bg-surface-elevated font-display font-bold uppercase tracking-wide text-text-muted/70">
                 <tr>
                     <th class="px-4 py-3">Pedido</th>
                     <th class="px-4 py-3">Cliente</th>
@@ -22,7 +22,7 @@
                     <th class="px-4 py-3 text-right">Acciones</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-border">
+            <tbody class="divide-y divide-text/15">
                 @forelse ($orders as $order)
                     <tr class="bg-surface/40">
                         <td class="px-4 py-3 text-text">{{ $order->order_number }}</td>
@@ -30,7 +30,7 @@
                         <td class="px-4 py-3 text-text-muted/70">{{ $order->created_at->format('d/m/Y H:i') }}</td>
                         <td class="px-4 py-3 text-text-muted/70">S/ {{ number_format($order->total, 2) }}</td>
                         <td class="px-4 py-3">
-                            <span class="rounded-full bg-primary/20 px-2 py-1 text-xs text-primary">{{ $order->statusLabel() }}</span>
+                            <span class="badge-brutal bg-primary/20 px-2 py-1 text-xs font-display font-bold uppercase tracking-wide text-primary">{{ $order->statusLabel() }}</span>
                         </td>
                         <td class="px-4 py-3 text-right">
                             <a href="{{ route('admin.orders.show', $order) }}" wire:navigate class="text-primary hover:text-primary-hover">Ver</a>

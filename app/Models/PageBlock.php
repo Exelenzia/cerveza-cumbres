@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-#[Fillable(['page_id', 'type', 'data', 'sort_order'])]
+#[Fillable(['page_id', 'type', 'data', 'sort_order', 'show_on_homepage'])]
 class PageBlock extends Model implements HasMedia
 {
     use InteractsWithMedia;
@@ -23,12 +23,15 @@ class PageBlock extends Model implements HasMedia
 
     public const TYPE_CTA = 'cta';
 
+    public const TYPE_TEAM = 'team';
+
     public const TYPES = [
         self::TYPE_HERO,
         self::TYPE_TEXT_IMAGE,
         self::TYPE_PRODUCT_GRID,
         self::TYPE_TESTIMONIALS,
         self::TYPE_CTA,
+        self::TYPE_TEAM,
     ];
 
     public const LABELS = [
@@ -37,12 +40,14 @@ class PageBlock extends Model implements HasMedia
         self::TYPE_PRODUCT_GRID => 'Grid de productos',
         self::TYPE_TESTIMONIALS => 'Testimonios',
         self::TYPE_CTA => 'Llamado a la acción',
+        self::TYPE_TEAM => 'Equipo',
     ];
 
     protected function casts(): array
     {
         return [
             'data' => 'array',
+            'show_on_homepage' => 'boolean',
         ];
     }
 
@@ -61,6 +66,11 @@ class PageBlock extends Model implements HasMedia
         return $this->getFirstMediaUrl('image') ?: null;
     }
 
+    public function teamPhotoUrl(int $itemIndex): ?string
+    {
+        return $this->getFirstMediaUrl("team-{$itemIndex}") ?: null;
+    }
+
     public static function defaultData(string $type): array
     {
         return match ($type) {
@@ -69,6 +79,7 @@ class PageBlock extends Model implements HasMedia
             self::TYPE_PRODUCT_GRID => ['heading' => '', 'source' => 'popular', 'category_id' => null, 'limit' => 4],
             self::TYPE_TESTIMONIALS => ['heading' => '', 'items' => [['author' => '', 'quote' => '']]],
             self::TYPE_CTA => ['heading' => '', 'body' => '', 'button_label' => '', 'button_link' => ''],
+            self::TYPE_TEAM => ['heading' => '', 'items' => [['name' => '', 'role' => '']]],
             default => [],
         };
     }

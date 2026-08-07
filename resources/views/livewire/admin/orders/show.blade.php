@@ -2,8 +2,8 @@
     <a href="{{ route('admin.orders.index') }}" wire:navigate class="text-sm text-primary hover:text-primary-hover">← Volver a pedidos</a>
 
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div class="lg:col-span-2 rounded-xl border border-border bg-surface-elevated p-6">
-            <h2 class="mb-4 font-display text-lg uppercase tracking-wide text-text">Productos</h2>
+        <div class="lg:col-span-2 card-brutal bg-surface-elevated p-6">
+            <h2 class="mb-4 font-display text-lg font-bold uppercase tracking-wide text-text">Productos</h2>
             <div class="space-y-3">
                 @foreach ($items as $item)
                     <div class="flex justify-between text-sm">
@@ -12,7 +12,7 @@
                     </div>
                 @endforeach
             </div>
-            <div class="mt-4 space-y-2 border-t border-border pt-4 text-sm">
+            <div class="mt-4 space-y-2 border-t-[2px] border-text/20 pt-4 text-sm">
                 <div class="flex justify-between text-text-muted/80">
                     <span>Subtotal</span>
                     <span>S/ {{ number_format($order->subtotal, 2) }}</span>
@@ -27,7 +27,7 @@
                 </div>
             </div>
 
-            <h2 class="mb-3 mt-8 font-display text-lg uppercase tracking-wide text-text">Cliente y entrega</h2>
+            <h2 class="mb-3 mt-8 font-display text-lg font-bold uppercase tracking-wide text-text">Cliente y entrega</h2>
             <p class="text-sm text-text-muted/80">{{ $order->customer_name }} · {{ $order->customer_email }}</p>
             @if ($order->customer_phone)
                 <p class="text-sm text-text-muted/80">Tel: {{ $order->customer_phone }}</p>
@@ -39,14 +39,14 @@
         </div>
 
         <div class="space-y-6">
-            <div class="rounded-xl border border-border bg-surface-elevated p-6">
-                <h2 class="mb-3 font-display text-lg uppercase tracking-wide text-text">Estado</h2>
+            <div class="card-brutal bg-surface-elevated p-6">
+                <h2 class="mb-3 font-display text-lg font-bold uppercase tracking-wide text-text">Estado</h2>
                 <p class="mb-4 text-sm text-text-muted/70">Estado actual: <span class="text-primary">{{ $order->statusLabel() }}</span></p>
                 <div class="space-y-2">
                     @foreach ($statuses as $s)
                         <button
                             wire:click="updateStatus('{{ $s }}')"
-                            class="w-full rounded-lg border px-4 py-2 text-left text-sm capitalize transition {{ $order->status === $s ? 'border-primary bg-primary text-primary-on' : 'border-border text-text-muted hover:border-primary' }}"
+                            class="w-full border-[2px] px-4 py-2 text-left text-sm font-display font-bold uppercase tracking-wide transition {{ $order->status === $s ? 'border-text bg-primary text-primary-on' : 'border-text/30 text-text-muted hover:border-text' }}"
                         >
                             {{ $s }}
                         </button>
@@ -54,8 +54,8 @@
                 </div>
             </div>
 
-            <div class="rounded-xl border border-border bg-surface-elevated p-6">
-                <h2 class="mb-3 font-display text-lg uppercase tracking-wide text-text">Pago</h2>
+            <div class="card-brutal bg-surface-elevated p-6">
+                <h2 class="mb-3 font-display text-lg font-bold uppercase tracking-wide text-text">Pago</h2>
                 <p class="text-sm text-text-muted/80">Método: {{ $order->payment_method ?? '—' }}</p>
                 @if ($order->paid_at)
                     <p class="text-sm text-text-muted/80">Pagado: {{ $order->paid_at->format('d/m/Y H:i') }}</p>
@@ -63,17 +63,17 @@
                 <p class="mt-2 text-sm text-text-muted/60">Ref: {{ $order->payment_reference ?? '—' }}</p>
             </div>
 
-            <div class="rounded-xl border border-border bg-surface-elevated p-6">
-                <h2 class="mb-3 font-display text-lg uppercase tracking-wide text-text">Comprobante electrónico</h2>
+            <div class="card-brutal bg-surface-elevated p-6">
+                <h2 class="mb-3 font-display text-lg font-bold uppercase tracking-wide text-text">Comprobante electrónico</h2>
 
                 @if ($invoiceError)
-                    <div class="mb-3 rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+                    <div class="mb-3 border-[2px] border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-300">
                         {{ $invoiceError }}
                     </div>
                 @endif
 
                 @forelse ($invoices as $invoice)
-                    <div class="mb-2 rounded-lg border border-border px-3 py-2 text-sm">
+                    <div class="mb-2 border-[2px] border-text/20 px-3 py-2 text-sm">
                         <div class="flex justify-between">
                             <span class="text-text">{{ $invoice->tipoLabel() }} {{ $invoice->numeroCompleto() }}</span>
                             <span class="{{ $invoice->estado === 'aceptado' ? 'text-green-400' : ($invoice->estado === 'error' || $invoice->estado === 'rechazado' ? 'text-red-400' : 'text-primary') }}">
@@ -89,11 +89,11 @@
                 @endforelse
 
                 <div class="mt-3 flex items-center gap-2">
-                    <select wire:model="tipoComprobante" class="rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text focus:border-primary focus:outline-none">
+                    <select wire:model="tipoComprobante" class="border-[2px] border-text bg-surface px-3 py-2 text-sm text-text focus:border-primary focus:outline-none">
                         <option value="03">Boleta</option>
                         <option value="01">Factura</option>
                     </select>
-                    <button wire:click="issueInvoice" wire:loading.attr="disabled" class="flex-1 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-on hover:bg-primary-hover disabled:opacity-50">
+                    <button wire:click="issueInvoice" wire:loading.attr="disabled" class="btn-brutal flex-1 bg-primary px-4 py-2 text-sm font-display font-bold uppercase tracking-wide text-primary-on hover:bg-primary-hover disabled:opacity-50">
                         Emitir comprobante
                     </button>
                 </div>

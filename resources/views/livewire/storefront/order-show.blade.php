@@ -1,11 +1,11 @@
 <div class="mx-auto max-w-3xl px-6 py-16">
     <div class="mb-10 text-center">
         <p class="text-sm uppercase tracking-[0.3em] text-secondary">Pedido</p>
-        <h1 class="mt-2 font-display text-4xl uppercase tracking-wide text-text">{{ $order->order_number }}</h1>
-        <span class="mt-4 inline-block rounded-full bg-primary/20 px-4 py-1.5 text-sm text-primary">{{ $order->statusLabel() }}</span>
+        <h1 class="mt-2 font-display text-4xl uppercase tracking-wide text-text" data-reveal>{{ $order->order_number }}</h1>
+        <span class="badge-brutal mt-4 bg-primary/20 px-4 py-1.5 text-sm font-bold text-primary">{{ $order->statusLabel() }}</span>
     </div>
 
-    <div class="rounded-xl border border-border bg-surface-muted p-6">
+    <div class="card-brutal p-6" data-reveal>
         <h2 class="mb-4 font-display text-lg uppercase tracking-wide text-text">Productos</h2>
         <div class="space-y-3">
             @foreach ($items as $item)
@@ -31,8 +31,8 @@
         </div>
     </div>
 
-    <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <div class="rounded-xl border border-border bg-surface-muted p-6">
+    <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2" data-reveal>
+        <div class="card-brutal p-6">
             <h2 class="mb-3 font-display text-lg uppercase tracking-wide text-text">Entrega</h2>
             <p class="text-sm text-text/80">{{ $order->customer_name }}</p>
             <p class="text-sm text-text/80">{{ $order->shipping_address }}</p>
@@ -41,7 +41,7 @@
                 <p class="mt-2 text-sm text-text/60">Tel: {{ $order->customer_phone }}</p>
             @endif
         </div>
-        <div class="rounded-xl border border-border bg-surface-muted p-6">
+        <div class="card-brutal p-6">
             <h2 class="mb-3 font-display text-lg uppercase tracking-wide text-text">Pago</h2>
             <p class="text-sm text-text/80">Método: Culqi (tarjeta)</p>
             @if ($order->paid_at)

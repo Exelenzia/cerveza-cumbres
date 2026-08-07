@@ -5,7 +5,6 @@ namespace App\Livewire\Admin\Cms;
 use App\Models\Category;
 use App\Models\Page;
 use App\Models\PageBlock;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -130,6 +129,34 @@ class PageEditor extends Component
         $this->blocks[$idx]['data']['items'] = array_values($this->blocks[$idx]['data']['items']);
     }
 
+    public function addTeamMember(int $blockId): void
+    {
+        $idx = $this->blockIndex($blockId);
+
+        if ($idx === null) {
+            return;
+        }
+
+        $this->blocks[$idx]['data']['items'][] = ['name' => '', 'role' => ''];
+    }
+
+    public function removeTeamMember(int $blockId, int $itemIndex): void
+    {
+        $idx = $this->blockIndex($blockId);
+
+        if ($idx === null) {
+            return;
+        }
+
+        unset($this->blocks[$idx]['data']['items'][$itemIndex]);
+        $this->blocks[$idx]['data']['items'] = array_values($this->blocks[$idx]['data']['items']);
+
+        if (isset($this->newImages[$blockId]) && is_array($this->newImages[$blockId])) {
+            unset($this->newImages[$blockId][$itemIndex]);
+            $this->newImages[$blockId] = array_values($this->newImages[$blockId]);
+        }
+    }
+
     public function saveBlockData(int $blockId): void
     {
         $this->savedBlockId = null;
@@ -142,16 +169,35 @@ class PageEditor extends Component
         $type = $this->blocks[$idx]['type'];
         $rules = $this->rulesFor($type, $idx);
 
-        if (isset($this->newImages[$blockId])) {
+        if ($type === PageBlock::TYPE_TEAM) {
+            foreach ($this->newImages[$blockId] ?? [] as $itemIdx => $file) {
+                $rules["newImages.{$blockId}.{$itemIdx}"] = 'nullable|image|max:4096';
+            }
+        } elseif (isset($this->newImages[$blockId])) {
             $rules["newImages.{$blockId}"] = 'nullable|image|max:4096';
         }
 
         $this->validate($rules);
 
         $block = PageBlock::where('page_id', $this->page->id)->findOrFail($blockId);
-        $block->update(['data' => $this->blocks[$idx]['data']]);
+        $block->update([
+            'data' => $this->blocks[$idx]['data'],
+            'show_on_homepage' => (bool) ($this->blocks[$idx]['show_on_homepage'] ?? false),
+        ]);
 
-        if (! empty($this->newImages[$blockId])) {
+        if ($type === PageBlock::TYPE_TEAM) {
+            foreach ($this->newImages[$blockId] ?? [] as $itemIdx => $file) {
+                if (! $file) {
+                    continue;
+                }
+
+                $block->addMedia($file->getRealPath())
+                    ->usingFileName($file->getClientOriginalName())
+                    ->toMediaCollection("team-{$itemIdx}");
+            }
+
+            unset($this->newImages[$blockId]);
+        } elseif (! empty($this->newImages[$blockId])) {
             $block->addMedia($this->newImages[$blockId]->getRealPath())
                 ->usingFileName($this->newImages[$blockId]->getClientOriginalName())
                 ->toMediaCollection('image');
@@ -208,18 +254,36 @@ class PageEditor extends Component
                 $prefix.'button_label' => 'required|string|max:100',
                 $prefix.'button_link' => 'required|string|max:255',
             ],
+            PageBlock::TYPE_TEAM => [
+                $prefix.'heading' => 'nullable|string|max:255',
+                $prefix.'items' => 'required|array|min:1',
+                $prefix.'items.*.name' => 'required|string|max:255',
+                $prefix.'items.*.role' => 'required|string|max:255',
+            ],
             default => [],
         };
     }
 
     private function loadBlocks(): void
     {
-        $this->blocks = $this->page->blocks()->get()->map(fn (PageBlock $block) => [
-            'id' => $block->id,
-            'type' => $block->type,
-            'data' => $block->data,
-            'image_url' => $block->image_url,
-        ])->all();
+        $this->blocks = $this->page->blocks()->get()->map(function (PageBlock $block) {
+            $row = [
+                'id' => $block->id,
+                'type' => $block->type,
+                'data' => $block->data,
+                'image_url' => $block->image_url,
+                'show_on_homepage' => $block->show_on_homepage,
+            ];
+
+            if ($block->type === PageBlock::TYPE_TEAM) {
+                $row['team_photo_urls'] = collect($block->data['items'] ?? [])
+                    ->keys()
+                    ->mapWithKeys(fn ($i) => [$i => $block->teamPhotoUrl($i)])
+                    ->all();
+            }
+
+            return $row;
+        })->all();
     }
 
     public function render()

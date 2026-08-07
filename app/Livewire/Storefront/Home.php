@@ -3,6 +3,7 @@
 namespace App\Livewire\Storefront;
 
 use App\Models\Category;
+use App\Models\PageBlock;
 use App\Models\Product;
 use App\Services\Cart\CartService;
 use Livewire\Attributes\Layout;
@@ -22,6 +23,7 @@ class Home extends Component
         return view('livewire.storefront.home', [
             'categories' => Category::orderBy('sort_order')->withCount('products')->get(),
             'popularProducts' => Product::where('is_active', true)->where('is_popular', true)->with('variants')->orderBy('sort_order')->take(4)->get(),
+            'teamBlocks' => PageBlock::where('type', PageBlock::TYPE_TEAM)->where('show_on_homepage', true)->orderBy('sort_order')->get(),
         ]);
     }
 }

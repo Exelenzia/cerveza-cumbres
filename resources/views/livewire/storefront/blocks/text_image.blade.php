@@ -1,11 +1,11 @@
 @php($data = $block->data)
 <section class="bg-surface-muted py-20">
     <div class="mx-auto max-w-6xl px-6">
-        <div class="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
+        <div class="grid grid-cols-1 items-center gap-10 md:grid-cols-2" data-reveal>
             @if (($data['image_position'] ?? 'left') === 'left')
                 <div class="order-1">
                     @if ($block->image_url)
-                        <img src="{{ $block->image_url }}" alt="" class="w-full rounded-xl object-cover">
+                        <img src="{{ $block->image_url }}" alt="" class="w-full border-[3px] border-text object-cover">
                     @endif
                 </div>
                 <div class="order-2">
@@ -19,7 +19,7 @@
                 </div>
                 <div class="order-1 md:order-2">
                     @if ($block->image_url)
-                        <img src="{{ $block->image_url }}" alt="" class="w-full rounded-xl object-cover">
+                        <img src="{{ $block->image_url }}" alt="" class="w-full border-[3px] border-text object-cover">
                     @endif
                 </div>
             @endif

@@ -1,21 +1,21 @@
 <div class="mx-auto max-w-7xl px-6 py-16">
-    <div class="mb-10 text-center">
+    <div class="mb-10 text-center" data-reveal>
         <span class="text-sm uppercase tracking-[0.3em] text-secondary">Catálogo</span>
-        <h1 class="mt-2 font-display text-4xl uppercase tracking-wide text-text">Tienda</h1>
+        <h1 class="mt-2 font-display text-4xl font-bold uppercase tracking-wide text-text">Tienda</h1>
     </div>
 
     @if ($categories->isNotEmpty())
-        <div class="mb-10 flex flex-wrap justify-center gap-3">
+        <div class="mb-10 flex flex-wrap justify-center gap-3" data-reveal>
             <button
                 wire:click="selectCategory(null)"
-                class="rounded-full border px-5 py-2 text-sm font-semibold transition {{ is_null($category) ? 'border-primary bg-primary text-primary-on' : 'border-border text-text hover:border-primary' }}"
+                class="badge-brutal px-5 py-2 text-sm font-bold transition {{ is_null($category) ? 'bg-primary text-primary-on' : 'bg-surface-elevated text-text hover:bg-primary hover:text-primary-on' }}"
             >
                 Todas
             </button>
             @foreach ($categories as $cat)
                 <button
                     wire:click="selectCategory({{ $cat->id }})"
-                    class="rounded-full border px-5 py-2 text-sm font-semibold transition {{ $category === $cat->id ? 'border-primary bg-primary text-primary-on' : 'border-border text-text hover:border-primary' }}"
+                    class="badge-brutal px-5 py-2 text-sm font-bold transition {{ $category === $cat->id ? 'bg-primary text-primary-on' : 'bg-surface-elevated text-text hover:bg-primary hover:text-primary-on' }}"
                 >
                     {{ $cat->name }}
                 </button>
@@ -29,17 +29,17 @@
                 $activeVariants = $product->variants->where('is_active', true);
                 $outOfStock = $product->has_variants ? $activeVariants->sum('stock') <= 0 : $product->stock <= 0;
             @endphp
-            <div class="group overflow-hidden rounded-xl border border-border bg-surface-muted">
-                <div class="relative aspect-square overflow-hidden">
+            <div class="card-brutal-interactive group overflow-hidden" data-reveal>
+                <div class="relative aspect-square overflow-hidden border-b-[3px] border-text">
                     <img src="{{ $product->cover_url }}" alt="{{ $product->name }}" class="h-full w-full object-cover transition group-hover:scale-105">
                     @if ($product->is_popular)
-                        <span class="absolute left-3 top-3 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-on">Popular</span>
+                        <span class="badge-brutal absolute left-3 top-3 bg-primary px-3 py-1 text-xs font-bold text-primary-on">Popular</span>
                     @endif
                     @if ($product->discount_percent)
-                        <span class="absolute right-3 top-3 rounded-full bg-red-500 px-3 py-1 text-xs font-semibold text-white">-{{ $product->discount_percent }}%</span>
+                        <span class="badge-brutal absolute right-3 top-3 bg-red-500 px-3 py-1 text-xs font-bold text-white">-{{ $product->discount_percent }}%</span>
                     @endif
                     @if ($outOfStock)
-                        <span class="absolute inset-x-3 bottom-3 rounded-full bg-surface/90 px-3 py-1 text-center text-xs font-semibold uppercase tracking-wide text-text">Agotado</span>
+                        <span class="absolute inset-x-3 bottom-3 border-[2px] border-text bg-surface/90 px-3 py-1 text-center text-xs font-bold uppercase tracking-wide text-text">Agotado</span>
                     @endif
                 </div>
                 <div class="p-5">
@@ -57,23 +57,23 @@
                         </div>
                         @if ($product->has_variants)
                             <div class="flex items-center gap-2">
-                                <select x-model.number="variantId" class="rounded-lg border border-border bg-surface px-2 py-1 text-xs text-text focus:border-primary focus:outline-none">
+                                <select x-model.number="variantId" class="border-[2px] border-text bg-surface px-2 py-1 text-xs text-text focus:border-primary focus:outline-none">
                                     @foreach ($activeVariants as $variant)
                                         <option value="{{ $variant->id }}" @if ($variant->stock <= 0) disabled @endif>
                                             {{ $variant->label }}@if ($variant->stock <= 0) (agotado)@endif
                                         </option>
                                     @endforeach
                                 </select>
-                                <button type="button" @click="$wire.addToCart('product', {{ $product->id }}, variantId)" class="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-on hover:bg-primary-hover">
+                                <button type="button" @click="$wire.addToCart('product', {{ $product->id }}, variantId)" class="btn-brutal bg-primary px-3 py-1.5 text-xs font-bold text-primary-on">
                                     Agregar
                                 </button>
                             </div>
                         @elseif ($product->stock > 0)
-                            <button wire:click="addToCart('product', {{ $product->id }})" class="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-on hover:bg-primary-hover">
+                            <button wire:click="addToCart('product', {{ $product->id }})" class="btn-brutal bg-primary px-3 py-1.5 text-xs font-bold text-primary-on">
                                 Agregar
                             </button>
                         @else
-                            <button type="button" disabled class="cursor-not-allowed rounded-lg bg-surface-muted px-3 py-1.5 text-xs font-semibold text-text/50">
+                            <button type="button" disabled class="cursor-not-allowed border-[3px] border-text/30 bg-surface-muted px-3 py-1.5 text-xs font-bold text-text/50">
                                 Agotado
                             </button>
                         @endif
@@ -87,17 +87,17 @@
 
     @if ($packs->isNotEmpty())
         <div class="mt-16">
-            <h2 class="mb-8 text-center font-display text-3xl uppercase tracking-wide text-text">Packs</h2>
+            <h2 class="mb-8 text-center font-display text-3xl font-bold uppercase tracking-wide text-text" data-reveal>Packs</h2>
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($packs as $pack)
-                    <div class="overflow-hidden rounded-xl border border-border bg-surface-muted">
-                        <div class="relative aspect-square overflow-hidden">
+                    <div class="card-brutal-interactive overflow-hidden" data-reveal>
+                        <div class="relative aspect-square overflow-hidden border-b-[3px] border-text">
                             <img src="{{ $pack->cover_url }}" alt="{{ $pack->name }}" class="h-full w-full object-cover">
                             @if ($pack->discount_percent)
-                                <span class="absolute right-3 top-3 rounded-full bg-red-500 px-3 py-1 text-xs font-semibold text-white">-{{ $pack->discount_percent }}%</span>
+                                <span class="badge-brutal absolute right-3 top-3 bg-red-500 px-3 py-1 text-xs font-bold text-white">-{{ $pack->discount_percent }}%</span>
                             @endif
                             @if ($pack->is_out_of_stock)
-                                <span class="absolute inset-x-3 bottom-3 rounded-full bg-surface/90 px-3 py-1 text-center text-xs font-semibold uppercase tracking-wide text-text">Agotado</span>
+                                <span class="absolute inset-x-3 bottom-3 border-[2px] border-text bg-surface/90 px-3 py-1 text-center text-xs font-bold uppercase tracking-wide text-text">Agotado</span>
                             @endif
                         </div>
                         <div class="p-5">
@@ -113,11 +113,11 @@
                                     @endif
                                 </div>
                                 @if (! $pack->is_out_of_stock)
-                                    <button wire:click="addToCart('pack', {{ $pack->id }})" class="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-on hover:bg-primary-hover">
+                                    <button wire:click="addToCart('pack', {{ $pack->id }})" class="btn-brutal bg-primary px-3 py-1.5 text-xs font-bold text-primary-on">
                                         Agregar
                                     </button>
                                 @else
-                                    <button type="button" disabled class="cursor-not-allowed rounded-lg bg-surface-muted px-3 py-1.5 text-xs font-semibold text-text/50">
+                                    <button type="button" disabled class="cursor-not-allowed border-[3px] border-text/30 bg-surface-muted px-3 py-1.5 text-xs font-bold text-text/50">
                                         Agotado
                                     </button>
                                 @endif
@@ -131,10 +131,10 @@
 
     @if ($packTemplates->isNotEmpty())
         <div class="mt-16">
-            <h2 class="mb-8 text-center font-display text-3xl uppercase tracking-wide text-text">Arma tu pack</h2>
+            <h2 class="mb-8 text-center font-display text-3xl font-bold uppercase tracking-wide text-text" data-reveal>Arma tu pack</h2>
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($packTemplates as $template)
-                    <a href="{{ route('pack-builder.show', $template) }}" class="overflow-hidden rounded-xl border border-border bg-surface-muted p-5 transition hover:border-primary">
+                    <a href="{{ route('pack-builder.show', $template) }}" class="card-brutal-interactive block p-5" data-reveal>
                         <h3 class="font-display text-xl text-text">{{ $template->name }}</h3>
                         @if ($template->description)
                             <p class="mt-2 line-clamp-2 text-sm text-text/70">{{ $template->description }}</p>

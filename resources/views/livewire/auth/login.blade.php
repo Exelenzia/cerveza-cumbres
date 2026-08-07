@@ -1,6 +1,6 @@
 <div class="mx-auto flex max-w-md flex-col justify-center px-6 py-20">
     <p class="text-center font-display text-xs font-semibold tracking-widest text-secondary uppercase">Bienvenido de vuelta</p>
-    <h1 class="mt-2 text-center font-display text-3xl font-semibold text-text">Ingresa a tu cuenta</h1>
+    <h1 class="mt-2 text-center font-display text-3xl uppercase tracking-wide text-text" data-reveal>Ingresa a tu cuenta</h1>
 
     <form wire:submit="authenticate" class="mt-10 space-y-5">
         <div>
@@ -10,7 +10,7 @@
                 id="email"
                 wire:model="email"
                 autocomplete="email"
-                class="mt-1 w-full rounded border border-border bg-surface-muted px-4 py-2.5 text-text placeholder-text-muted focus:border-primary focus:ring-primary focus:outline-none"
+                class="mt-1 w-full border-[2px] border-text bg-surface-muted px-4 py-2.5 text-text placeholder-text-muted focus:outline-none"
                 placeholder="tucorreo@ejemplo.com"
             >
             @error('email') <p class="mt-1 text-sm text-rose-400">{{ $message }}</p> @enderror
@@ -23,7 +23,7 @@
                 id="password"
                 wire:model="password"
                 autocomplete="current-password"
-                class="mt-1 w-full rounded border border-border bg-surface-muted px-4 py-2.5 text-text placeholder-text-muted focus:border-primary focus:ring-primary focus:outline-none"
+                class="mt-1 w-full border-[2px] border-text bg-surface-muted px-4 py-2.5 text-text placeholder-text-muted focus:outline-none"
                 placeholder="••••••••"
             >
             @error('password') <p class="mt-1 text-sm text-rose-400">{{ $message }}</p> @enderror
@@ -36,7 +36,7 @@
 
         <button
             type="submit"
-            class="font-display w-full rounded bg-primary py-3 text-sm font-semibold tracking-widest text-primary-on uppercase transition hover:bg-primary-hover"
+            class="btn-brutal font-display w-full bg-primary py-3 text-sm font-semibold tracking-widest text-primary-on uppercase transition hover:bg-primary-hover"
         >
             Ingresar
         </button>
