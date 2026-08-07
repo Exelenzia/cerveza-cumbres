@@ -40,13 +40,13 @@
                     <span class="text-text">CUM</span><span class="text-primary">BRES</span>
                 </a>
 
-                <nav class="hidden items-center gap-8 font-display text-sm font-bold tracking-widest text-text/90 uppercase md:flex">
+                <nav class="hidden items-center gap-10 font-display text-sm font-bold tracking-[0.22em] text-text/90 uppercase md:flex">
                     <a href="{{ route('shop') }}" wire:navigate class="transition hover:text-primary">Tienda</a>
                     <a href="{{ route('home') }}#lineas" class="transition hover:text-primary">Líneas Cerveceras</a>
                     <a href="{{ route('home') }}#historia" class="transition hover:text-primary">Historia</a>
                 </nav>
 
-                <div class="flex items-center gap-3 font-display text-sm font-bold tracking-widest uppercase">
+                <div class="flex items-center gap-5 font-display text-sm font-bold tracking-[0.22em] uppercase">
                     <livewire:storefront.cart-counter />
                     @auth
                         @if (auth()->user()->hasAnyRole(['admin', 'staff']))
