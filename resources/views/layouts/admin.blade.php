@@ -29,7 +29,7 @@
                     <p class="mt-1 text-xs font-bold tracking-widest text-text-muted uppercase">Panel Admin</p>
                 </div>
 
-                <nav class="mt-4 flex flex-col gap-1 px-3 font-display text-sm font-bold tracking-wide">
+                <nav class="mt-4 flex flex-col gap-1 px-3 font-display text-sm font-medium tracking-wide">
                     @php
                         $links = [
                             ['route' => 'admin.dashboard', 'label' => 'Dashboard'],
