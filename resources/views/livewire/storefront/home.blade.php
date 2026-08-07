@@ -1,6 +1,12 @@
 <div>
     <section class="relative overflow-hidden border-b-[3px] border-text bg-surface">
-        <div class="mx-auto flex max-w-7xl flex-col items-start px-6 py-24 sm:py-32">
+        <div class="absolute inset-0" aria-hidden="true">
+            <img src="{{ asset('images/hero-bg-placeholder.webp') }}" alt="" class="h-full w-full object-cover">
+            <div class="absolute inset-0 bg-surface/75 light:bg-surface/60"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/20 to-transparent"></div>
+        </div>
+
+        <div class="relative mx-auto flex max-w-7xl flex-col items-start px-6 py-24 sm:py-32">
             <span class="badge-brutal mb-6 bg-secondary px-3 py-1 text-sm font-bold uppercase tracking-[0.3em] text-surface">Cerveza artesanal &middot; Perú</span>
             <h1 class="text-brutal-hero font-display uppercase text-text" data-reveal>
                 Cumbres
