@@ -65,11 +65,16 @@
                     <button
                         type="button"
                         data-theme-toggle
-                        class="inline-flex items-center gap-2 border-[3px] border-text bg-surface-elevated px-3 py-1.5 normal-case tracking-normal transition hover:bg-primary hover:text-primary-on"
+                        class="btn-brutal h-11 w-11 shrink-0 bg-surface-elevated p-0 text-text hover:bg-primary hover:text-primary-on"
                         aria-label="Cambiar tema"
                     >
-                        <span data-theme-icon class="grid h-5 w-5 place-items-center rounded-full bg-primary text-[.7rem] text-primary-on">☾</span>
-                        <span data-theme-label class="hidden text-xs sm:inline">Oscuro</span>
+                        <svg class="light:hidden h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
+                        </svg>
+                        <svg class="hidden light:block h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="4" />
+                            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+                        </svg>
                     </button>
                 </div>
             </div>
