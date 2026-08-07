@@ -5,8 +5,8 @@
             <h1 class="text-brutal-hero font-display uppercase text-text" data-reveal>
                 Cumbres
             </h1>
-            <p class="mt-6 max-w-xl text-lg text-text/80" data-reveal>
-                Cerveza artesanal nacida en las alturas. Cada línea cuenta la historia de un lugar, un sabor y una montaña.
+            <p class="mt-6 max-w-xl font-serif text-lg italic text-text/80" data-reveal>
+                "Cerveza artesanal nacida en las alturas, para los que saben."
             </p>
             <div class="mt-10 flex flex-wrap gap-4" data-reveal>
                 <a href="{{ route('shop') }}" class="btn-brutal bg-primary px-8 py-3 font-display font-bold uppercase tracking-wide text-primary-on">
@@ -133,6 +133,9 @@
             <p class="text-text/80" data-reveal>
                 Cumbres nació entre montañas, con la idea de llevar el sabor artesanal peruano a cada mesa. Elaboramos
                 cada lote con ingredientes seleccionados y procesos tradicionales, honrando el paisaje que nos inspira.
+            </p>
+            <p class="mt-4 font-serif text-secondary italic" data-reveal>
+                Desde Lima, con ingredientes cuidadosamente seleccionados de todo el Perú.
             </p>
         </div>
     </section>

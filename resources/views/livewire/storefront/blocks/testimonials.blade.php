@@ -9,7 +9,7 @@
                 @foreach ($data['items'] as $item)
                     @if (! empty($item['quote']))
                         <blockquote class="card-brutal p-6">
-                            <p class="text-text/80">&ldquo;{{ $item['quote'] }}&rdquo;</p>
+                            <p class="font-serif italic text-text/80">&ldquo;{{ $item['quote'] }}&rdquo;</p>
                             @if (! empty($item['author']))
                                 <footer class="mt-4 text-sm font-semibold uppercase tracking-wide text-secondary">{{ $item['author'] }}</footer>
                             @endif

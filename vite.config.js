@@ -12,8 +12,12 @@ export default defineConfig({
                 bunny('Instrument Sans', {
                     weights: [400, 500, 600],
                 }),
-                bunny('Oswald', {
-                    weights: [500, 600, 700],
+                bunny('Anton', {
+                    weights: [400],
+                }),
+                bunny('Playfair Display', {
+                    weights: [500, 600],
+                    styles: ['italic'],
                 }),
             ],
         }),

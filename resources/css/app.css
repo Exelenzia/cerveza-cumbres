@@ -8,20 +8,24 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
-    --font-display: 'Oswald', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Anton', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-serif: 'Playfair Display', ui-serif, Georgia, 'Times New Roman', serif;
 
-    /* Cumbres brand palette — sampled from Branding/ (armonia de colores.png, logo1/logo2, isotipo) */
-    --color-terracotta-50: #fbf1ec;
-    --color-terracotta-100: #f6e1d6;
-    --color-terracotta-200: #eec0ac;
-    --color-terracotta-300: #e39a7d;
-    --color-terracotta-400: #d97854;
-    --color-terracotta-500: #c85a3f;
-    --color-terracotta-600: #ac472f;
-    --color-terracotta-700: #8a3826;
-    --color-terracotta-800: #6b2c1f;
-    --color-terracotta-900: #4a1f16;
-    --color-terracotta-950: #2e130d;
+    /* Cumbres brand palette — copied 1:1 from the reference Figma Make design
+       (https://www.figma.com/make/fNrJXKKf7yTVsRCPxhdI3R): near-black warm surfaces
+       + a single burnt-amber accent, cream/tan neutrals. "terracotta" name kept for
+       minimal diff even though the hue moved from coral-red to amber-orange. */
+    --color-terracotta-50: #fbf0e2;
+    --color-terracotta-100: #f6dfc0;
+    --color-terracotta-200: #eec087;
+    --color-terracotta-300: #e29f52;
+    --color-terracotta-400: #d9822e;
+    --color-terracotta-500: #c06b22;
+    --color-terracotta-600: #a25a1b;
+    --color-terracotta-700: #7d4517;
+    --color-terracotta-800: #5c3315;
+    --color-terracotta-900: #402511;
+    --color-terracotta-950: #26160b;
 
     --color-teal-50: #eefaf7;
     --color-teal-100: #d3f1ea;
@@ -77,9 +81,11 @@
     --color-primary-active: var(--color-terracotta-200);
     --color-primary-on: var(--color-terracotta-950);
 
-    --color-secondary: var(--color-teal-300);
-    --color-secondary-hover: var(--color-teal-200);
-    --color-secondary-soft: color-mix(in srgb, var(--color-teal-300) 16%, transparent);
+    /* The reference design uses a single accent hue throughout (no second/teal accent) —
+       secondary stays in the same amber family, one step lighter, for subtle differentiation. */
+    --color-secondary: var(--color-terracotta-300);
+    --color-secondary-hover: var(--color-terracotta-200);
+    --color-secondary-soft: color-mix(in srgb, var(--color-terracotta-300) 16%, transparent);
 
     --color-accent: var(--color-coral-400);
     --color-accent-hover: var(--color-coral-300);
@@ -116,9 +122,9 @@
     --color-primary-active: var(--color-terracotta-700);
     --color-primary-on: var(--color-cream-50);
 
-    --color-secondary: var(--color-teal-600);
-    --color-secondary-hover: var(--color-teal-700);
-    --color-secondary-soft: var(--color-teal-200);
+    --color-secondary: var(--color-terracotta-600);
+    --color-secondary-hover: var(--color-terracotta-700);
+    --color-secondary-soft: var(--color-terracotta-200);
 
     --color-accent: var(--color-coral-500);
     --color-accent-hover: var(--color-coral-600);

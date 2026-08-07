@@ -15,6 +15,7 @@
         </script>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        {{ \Illuminate\Support\Facades\Vite::fonts() }}
 
         @livewireStyles
     </head>
